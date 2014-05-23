@@ -64,13 +64,13 @@ function AniqueEngine(canvas){
             console.log("Unable to link shader program");
         }
 
-        this.vertexPositionAttribute = this.gl.getAttribLocation(shaderProgram,"aVertexPosition");
+        this.vertexPositionAttribute = this.gl.getAttribLocation(this.shaderProgram,"aVertexPosition");
         this.gl.enableVertexAttribArray(this.vertexPositionAttribute);
     };
 
     this.initBuffers = function(){
         this.squareVerticesBuffer = this.gl.createBuffer();
-        this.gl.bindBuffer(gl.ARRAY_BUFFER,this.squareVerticesBuffer);
+        this.gl.bindBuffer(this.gl.ARRAY_BUFFER,this.squareVerticesBuffer);
 
         var vertices = [
             1.0,1.0,0.0,

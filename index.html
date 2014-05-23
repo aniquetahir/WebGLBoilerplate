@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Test</title>
+        <script src="src/TweenMax.min.js"></script>
+        <script src="src/sylvester.js"></script>
+        <script src="src/glUtils.js"></script>
+        <script id="shader-fs" type="x-shader/x-fragment">
+            void main(){
+                gl_FragColor=vec4(0.0,0.0,0.0,0.0);
+            }
+        </script>
+        <script id="shader-vs" type="x-shader/x-vertex">
+            attribute vec3 aVertexPosition;
+
+            uniform mat4 uMVMatrix;
+            uniform mat4 uPMatrix;
+
+            void main(){
+                gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition,1.0);
+            }
+        </script>
+    </head>
+    <body>
+        <canvas id="glCanvas" width="640" height="480">
+            <p>Your Browser does not support HTML5 Canvas. What are you using Win98?</p>
+            <p>Upgrade your Browser!</p>
+        </canvas>
+
+        <script src="src/AniqueEngine.js"></script>
+        <script>
+            var ae=new AniqueEngine(document.getElementById("glCanvas"));
+            ae.init();
+        </script>
+        <!--script>
+            var gl,canvas,squareVerticesBuffer,mvMatrix,shaderProgram,vertexPositionAttribute,perspectiveMatrix;
+            var horizAspect = 480.0/640.0;
+
+            function initBuffers(){
+                squareVerticesBuffer = gl.createBuffer();
+                gl.bindBuffer(gl.ARRAY_BUFFER,squareVerticesBuffer);
+
+                var vertices = [
+                        1.0,1.0,0.0,
+                        -1.0,1.0,0.0,
+                        1.0,-1.0,0.0,
+                        -1.0,-1.0,0.0
+
+                ];
+                gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(vertices),gl.STATIC_DRAW);
+            }
+
+            function initWebGL(canvas){
+                gl=null;
+                try{
+                    gl = canvas.getContext("webgl") || gl.getContext("experimental-webgl");
+                }catch(e){}
+
+                if(!gl){
+                    alert("unable to start webgl context");
+                    gl = null;
+                }
+
+                return gl;
+
+            }
+
+            function getShader(gl,id){
+                var shaderScript,theSource,currentChild,shader;
+                shaderScript = document.getElementById(id);
+
+                if(!shaderScript){
+                    return null;
+                }
+
+                theSource="";
+                currentChild=shaderScript.firstChild;
+
+                while(currentChild){
+                    if(currentChild.nodeType == currentChild.TEXT_NODE){
+                        theSource+=currentChild.textContent;
+                    }
+                    currentChild = currentChild.nextSibling;
+                }
+                if(shaderScript.type=="x-shader/x-fragment"){
+                    shader = gl.createShader(gl.FRAGMENT_SHADER);
+                }else if(shaderScript.type=="x-shader/x-vertex"){
+                    shader = gl.createShader(gl.VERTEX_SHADER);
+                }else{
+                    return null;
+                }
+
+                gl.shaderSource(shader,theSource);
+                gl.compileShader(shader);
+
+                if(!gl.getShaderParameter(shader,gl.COMPILE_STATUS)){
+                    alert("an error occured during shader compilation"+gl.getShaderInfoLog(shader));
+                    return null;
+                }
+
+                return shader;
+            }
+
+            function initShaders(){
+                var fragmentShader = getShader(gl,'shader-fs');
+                var vertexShader = getShader(gl,'shader-vs');
+
+                //Create Shader Program
+                shaderProgram = gl.createProgram();
+                gl.attachShader(shaderProgram,fragmentShader);
+                gl.attachShader(shaderProgram,vertexShader);
+                gl.linkProgram(shaderProgram);
+
+                if(!gl.getProgramParameter(shaderProgram,gl.LINK_STATUS)){
+                    alert('Unable to initialize shader');
+                }
+                gl.useProgram(shaderProgram);
+                vertexPositionAttribute=gl.getAttribLocation(shaderProgram,"aVertexPosition");
+                gl.enableVertexAttribArray(vertexPositionAttribute);
+            }
+
+            function drawScene(){
+                gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
+                perspectiveMatrix=makePerspective(45,640.0/480.0,0.1,100.0);
+
+                loadIdentity();
+                mvTranslate([-0.0,0.0,-6.0]);
+
+                gl.bindBuffer(gl.ARRAY_BUFFER,squareVerticesBuffer);
+
+                gl.vertexAttribPointer(vertexPositionAttribute, 3, gl.FLOAT, false, 0, 0);
+                setMatrixUniforms();
+                gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+            }
+
+            function start(){
+                var canvas=document.getElementById("glCanvas");
+                gl=initWebGL(canvas);
+
+                if(gl){
+                    gl.clearColor(0.0,0.0,0.0,1.0);
+                    gl.clearDepth(1.0);
+                    gl.enable(gl.DEPTH_TEST);
+                    gl.depthFunc(gl.LEQUAL);
+
+                    initShaders();
+                    initBuffers();
+                    setInterval(drawScene,15);
+
+                }
+
+            }
+
+            //Utility Functions
+            function loadIdentity() {
+                mvMatrix = Matrix.I(4);
+            }
+
+            function multMatrix(m) {
+                mvMatrix = mvMatrix.x(m);
+            }
+
+            function mvTranslate(v) {
+                multMatrix(Matrix.Translation($V([v[0], v[1], v[2]])).ensure4x4());
+            }
+
+            function setMatrixUniforms() {
+                var pUniform = gl.getUniformLocation(shaderProgram, "uPMatrix");
+                gl.uniformMatrix4fv(pUniform, false, new Float32Array(perspectiveMatrix.flatten()));
+
+                var mvUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
+                gl.uniformMatrix4fv(mvUniform, false, new Float32Array(mvMatrix.flatten()));
+            }
+        </script-->
+
+    </body>
+</html>

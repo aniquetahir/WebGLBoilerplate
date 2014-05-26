@@ -26,11 +26,13 @@
             <p>Your Browser does not support HTML5 Canvas. What are you using Win98?</p>
             <p>Upgrade your Browser!</p>
         </canvas>
-
+        <script src="src/sceneNode.js"></script>
         <script src="src/AniqueEngine.js"></script>
         <script>
             var ae=new AniqueEngine(document.getElementById("glCanvas"));
             ae.init();
+            //ae.drawScene();
+            setInterval(function(){ae.drawScene();},15);
         </script>
         <!--script>
             var gl,canvas,squareVerticesBuffer,mvMatrix,shaderProgram,vertexPositionAttribute,perspectiveMatrix;
